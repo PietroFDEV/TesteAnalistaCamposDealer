@@ -1,148 +1,90 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using System.Net;
 using System.Web.Http;
-using System.Web.Mvc;
 using TesteCamposDealer.DB;
 
 namespace TesteCamposDealer.Controllers
 {
+    [ApiKeyAuthorize]
+    [RoutePrefix("api/cliente")]
     public class ClienteController : ApiController
     {
-        /// <summary>
-        /// Recupera o Cliente por Id..
-        /// </summary>
-        /// <param name="idCliente"></param>
-        /// <returns></returns>
-        [System.Web.Http.ActionName("GetById")]
-        public Cliente GetById(int idCliente)
+        private readonly IClienteService _service;
+
+        public ClienteController(IClienteService service)
         {
-            Cliente cliret = null;
-
-            DBTesteCamposDealerDataContext db = new DBTesteCamposDealerDataContext();
-            db.DeferredLoadingEnabled = false;
-
-            try
-            {
-                cliret = (from c in db.Cliente
-                          where c.idCliente == idCliente
-                          select c).FirstOrDefault();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-            return cliret;
+            _service = service;
         }
 
-        /// <summary>
-        /// Recupera todos os clientes
-        /// </summary>
-        /// <returns></returns>
-        public List<Cliente> GetAll()
+        [HttpGet]
+        [Route("")]
+        public IHttpActionResult GetAll()
         {
-            List<Cliente> lstCliRet = null;
-
-            DBTesteCamposDealerDataContext db = new DBTesteCamposDealerDataContext();
-            db.DeferredLoadingEnabled = false;
-
-            try
-            {
-                lstCliRet = (from c in db.Cliente
-                          select c).ToList();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-            return lstCliRet;
+            return Ok(_service.GetAll());
         }
 
-
-        /// <summary>
-        /// Cadastra um Cliente
-        /// </summary>
-        /// <param name="cliente"></param>
-        public bool Post([FromBody] Cliente clienteDTO)
+        [HttpGet]
+        [Route("{id:int}", Name = "GetClienteById")]
+        public IHttpActionResult GetById(int id)
         {
-
-            DBTesteCamposDealerDataContext db = new DBTesteCamposDealerDataContext();
-            db.DeferredLoadingEnabled = false;
-
             try
             {
-                db.Cliente.InsertOnSubmit(clienteDTO);
-                db.SubmitChanges();
+                return Ok(_service.GetById(id));
             }
-            catch (Exception ex)
+            catch (NotFoundException ex)
             {
-                return false;
+                return Content(HttpStatusCode.NotFound, ex.Message);
             }
-
-            return true;
         }
 
-        /// <summary>
-        /// Altera um Cliente pelo Id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="value"></param>
-        [System.Web.Http.ActionName("PutById")]
-        public bool Put(int idCliente, [FromBody] Cliente clienteDTO)
+        [HttpPost]
+        [Route("")]
+        public IHttpActionResult Criar([FromBody] Cliente cliente)
         {
-            Cliente cliret = null;
-
-            DBTesteCamposDealerDataContext db = new DBTesteCamposDealerDataContext();
-            db.DeferredLoadingEnabled = false;
-
             try
             {
-                cliret = (from c in db.Cliente
-                          where c.idCliente == idCliente
-                          select c).FirstOrDefault();
-
-                cliret.endereco = clienteDTO.endereco;
-                cliret.nomeCliente = clienteDTO.nomeCliente;
-                db.SubmitChanges();
+                var created = _service.Criar(cliente);
+                return CreatedAtRoute("GetClienteById", new { id = created.idCliente }, created);
             }
-            catch (Exception ex)
+            catch (ValidationException ex)
             {
-                throw ex;
+                return BadRequest(ex.Message);
             }
-
-            return true;
         }
 
-        /// <summary>
-        /// Deleta um cliente pelo seu id
-        /// </summary>
-        /// <param name="idCliente"></param>
-        [System.Web.Http.ActionName("DeleteById")]
-        public bool Delete(int idCliente)
+        [HttpPut]
+        [Route("{id:int}")]
+        public IHttpActionResult Atualizar(int id, [FromBody] Cliente cliente)
         {
-            Cliente cliret = null;
-
-            DBTesteCamposDealerDataContext db = new DBTesteCamposDealerDataContext();
-            db.DeferredLoadingEnabled = false;
-
             try
             {
-                cliret = (from c in db.Cliente
-                          where c.idCliente == idCliente
-                          select c).FirstOrDefault();
-
-                db.Cliente.DeleteOnSubmit(cliret);
-                db.SubmitChanges();
+                var updated = _service.Atualizar(id, cliente);
+                return Ok(updated);
             }
-            catch (Exception ex)
+            catch (NotFoundException ex)
             {
-                throw ex;
+                return Content(HttpStatusCode.NotFound, ex.Message);
             }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
-            return true;
+        [HttpDelete]
+        [Route("{id:int}")]
+        public IHttpActionResult Deletar(int id)
+        {
+            try
+            {
+                _service.Deletar(id);
+                return StatusCode(HttpStatusCode.NoContent);
+            }
+            catch (NotFoundException ex)
+            {
+                return Content(HttpStatusCode.NotFound, ex.Message);
+            }
         }
     }
 }

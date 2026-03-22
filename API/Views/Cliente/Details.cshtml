@@ -1,0 +1,10 @@
+﻿@model TesteCamposDealer.DB.Cliente
+
+<h2>Detalhes do Cliente</h2>
+
+<p><strong>ID:</strong> @Model.idCliente</p>
+<p><strong>Nome:</strong> @Model.nomeCliente</p>
+<p><strong>Endereço:</strong> @Model.endereco</p>
+
+<a href="/ClienteMvc/Edit/@Model.idCliente">Editar</a> |
+<a href="/ClienteMvc">Voltar</a>

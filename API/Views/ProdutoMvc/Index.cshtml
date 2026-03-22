@@ -1,0 +1,58 @@
+﻿@{
+    Layout = null;
+    ViewBag.Title = "Produtos";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        body { font-family: "Segoe UI", Arial, sans-serif; background: #f6f8ff; color: #1f2d5a; }
+        .wrap { max-width: 980px; margin: 32px auto; padding: 0 16px; }
+        .header { display: flex; align-items: center; justify-content: space-between; }
+        .btn { background: #2f5fff; color: #fff; padding: 10px 16px; border-radius: 10px; text-decoration: none; font-weight: 600; }
+        .btn:hover { background: #264fd1; }
+        .card { background: #fff; border-radius: 14px; padding: 16px; box-shadow: 0 8px 20px rgba(24,36,79,0.08); margin-top: 16px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 10px; border-bottom: 1px solid #eef1ff; text-align: left; }
+        .actions a { margin-right: 8px; }
+        .link { color: #2f5fff; text-decoration: none; font-weight: 600; }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <div class="header">
+        <h1>Produtos</h1>
+        <a class="btn" href="/produto/create">Novo Produto</a>
+    </div>
+
+    <div class="card">
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Descrição</th>
+                <th>Preço</th>
+                <th>Ações</th>
+            </tr>
+            @foreach (var p in Model)
+            {
+                <tr>
+                    <td>@p.idProduto</td>
+                    <td>@p.dscProduto</td>
+                    <td>@p.vlrProduto</td>
+                    <td class="actions">
+                        <a class="link" href="/produto/details/@p.idProduto">Detalhes</a>
+                        <a class="link" href="/produto/edit/@p.idProduto">Editar</a>
+                        <a class="link" href="/produto/delete/@p.idProduto">Excluir</a>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+
+    <p><a class="link" href="/">Voltar ao painel</a></p>
+</div>
+</body>
+</html>

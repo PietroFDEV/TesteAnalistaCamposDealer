@@ -1,0 +1,26 @@
+﻿# Build artifacts
+**/bin/
+**/obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# NuGet
+**/packages/
+
+# Test results
+TestResults/
+
+# Logs
+*.log
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# App_Data (runtime)
+**/App_Data/

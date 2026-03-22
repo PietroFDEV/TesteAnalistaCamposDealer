@@ -1,0 +1,40 @@
+﻿@model global::VendaDto
+
+<h2>Criar Venda</h2>
+
+@if (ViewBag.Erro != null)
+{
+    <p style="color:red">@ViewBag.Erro</p>
+}
+
+<form method="post">
+    <label>Cliente</label>
+    <input type="number" name="IdCliente" required />
+
+    <h3>Itens</h3>
+
+    <div id="itens"></div>
+
+    <button type="button" onclick="addItem()">Adicionar Item</button>
+
+    <br /><br />
+    <button type="submit">Salvar</button>
+</form>
+
+<a href="/VendaMvc">Voltar</a>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+function addItem() {
+    let index = $('.item').length;
+
+    let html = `
+    <div class="item">
+        Produto: <input name="Itens[${index}].IdProduto" required />
+        Quantidade: <input name="Itens[${index}].Quantidade" required />
+    </div>`;
+
+    $('#itens').append(html);
+}
+</script>

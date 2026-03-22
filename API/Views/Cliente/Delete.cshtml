@@ -1,0 +1,14 @@
+﻿@model TesteCamposDealer.DB.Cliente
+
+<h2>Excluir Cliente</h2>
+
+<p>Tem certeza que deseja excluir o cliente abaixo?</p>
+<p><strong>ID:</strong> @Model.idCliente</p>
+<p><strong>Nome:</strong> @Model.nomeCliente</p>
+<p><strong>Endereço:</strong> @Model.endereco</p>
+
+<form method="post">
+    <button type="submit">Confirmar Exclusão</button>
+</form>
+
+<a href="/ClienteMvc">Cancelar</a>

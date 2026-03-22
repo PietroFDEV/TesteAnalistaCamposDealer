@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: sqlserver_camposdealer
+    environment:
+      SA_PASSWORD: "YourStrong@Pass123"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sql_data:/var/opt/mssql
+      - ./backup:/backup
+
+  db-restore:
+    image: mcr.microsoft.com/mssql-tools
+    depends_on:
+      - sqlserver
+    volumes:
+      - ./restore.sql:/restore.sql
+      - ./pos_restore.sql:/pos_restore.sql
+      - ./backup:/backup
+    entrypoint: >
+      /bin/bash -c "
+      echo 'Waiting SQL Server...';
+      sleep 25;
+      /opt/mssql-tools/bin/sqlcmd -S sqlserver -U sa -P YourStrong@Pass123 -i /restore.sql;
+      /opt/mssql-tools/bin/sqlcmd -S sqlserver -U sa -P YourStrong@Pass123 -i /pos_restore.sql;
+      echo 'Database restored and updated!';
+      "
+
+volumes:
+  sql_data:

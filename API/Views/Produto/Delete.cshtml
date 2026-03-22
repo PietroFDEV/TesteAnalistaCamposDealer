@@ -1,0 +1,14 @@
+﻿@model TesteCamposDealer.DB.Produto
+
+<h2>Excluir Produto</h2>
+
+<p>Tem certeza que deseja excluir o produto abaixo?</p>
+<p><strong>ID:</strong> @Model.idProduto</p>
+<p><strong>Descrição:</strong> @Model.dscProduto</p>
+<p><strong>Preço:</strong> @Model.vlrProduto</p>
+
+<form method="post">
+    <button type="submit">Confirmar Exclusão</button>
+</form>
+
+<a href="/ProdutoMvc">Cancelar</a>

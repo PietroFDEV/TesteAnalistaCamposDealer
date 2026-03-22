@@ -1,0 +1,28 @@
+﻿@model List<TesteCamposDealer.DB.Produto>
+
+<h2>Produtos</h2>
+
+<a href="/ProdutoMvc/Create">Novo Produto</a>
+
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Descrição</th>
+        <th>Preço</th>
+        <th>Ações</th>
+    </tr>
+
+    @foreach (var p in Model)
+    {
+        <tr>
+            <td>@p.idProduto</td>
+            <td>@p.dscProduto</td>
+            <td>@p.vlrProduto</td>
+            <td>
+                <a href="/ProdutoMvc/Details/@p.idProduto">Detalhes</a> |
+                <a href="/ProdutoMvc/Edit/@p.idProduto">Editar</a> |
+                <a href="/ProdutoMvc/Delete/@p.idProduto">Excluir</a>
+            </td>
+        </tr>
+    }
+</table>

@@ -1,148 +1,109 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using System.Net;
 using System.Web.Http;
-using System.Web.Mvc;
 using TesteCamposDealer.DB;
 
 namespace TesteCamposDealer.Controllers
 {
+    [ApiKeyAuthorize]
+    [RoutePrefix("api/produto")]
     public class ProdutoController : ApiController
     {
-        /// <summary>
-        /// Recupera o Produto por Id..
-        /// </summary>
-        /// <param name="idProduto"></param>
-        /// <returns></returns>
-        [System.Web.Http.ActionName("GetById")]
-        public Produto GetById(int idProduto)
+        private readonly IProdutoService _service;
+
+        public ProdutoController(IProdutoService service)
         {
-            Produto produtoRet = null;
-
-            DBTesteCamposDealerDataContext db = new DBTesteCamposDealerDataContext();
-            db.DeferredLoadingEnabled = false;
-
-            try
-            {
-                produtoRet = (from c in db.Produto
-                          where c.idProduto == idProduto
-                          select c).FirstOrDefault();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-            return produtoRet;
+            _service = service;
         }
 
-        /// <summary>
-        /// Recupera todos os Produtos
-        /// </summary>
-        /// <returns></returns>
-        public List<Produto> GetAll()
+        [HttpGet]
+        [Route("")]
+        public IHttpActionResult GetAll()
         {
-            List<Produto> lstProdutoRet = null;
-
-            DBTesteCamposDealerDataContext db = new DBTesteCamposDealerDataContext();
-            db.DeferredLoadingEnabled = false;
-
-            try
-            {
-                lstProdutoRet = (from c in db.Produto
-                             select c).ToList();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-            return lstProdutoRet;
+            return Ok(_service.GetAll());
         }
 
-
-        /// <summary>
-        /// Cadastra um Produto
-        /// </summary>
-        /// <param name="produtoDTO"></param>
-        public bool Post([FromBody] Produto produtoDTO)
+        [HttpGet]
+        [Route("{id:int}", Name = "GetProdutoById")]
+        public IHttpActionResult GetById(int id)
         {
-
-            DBTesteCamposDealerDataContext db = new DBTesteCamposDealerDataContext();
-            db.DeferredLoadingEnabled = false;
-
             try
             {
-                db.Produto.InsertOnSubmit(produtoDTO);
-                db.SubmitChanges();
+                return Ok(_service.GetById(id));
             }
-            catch (Exception ex)
+            catch (NotFoundException ex)
             {
-                return false;
+                return Content(HttpStatusCode.NotFound, ex.Message);
             }
-
-            return true;
         }
 
-        /// <summary>
-        /// Altera um Produto pelo Id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="value"></param>
-        [System.Web.Http.ActionName("PutById")]
-        public bool Put(int idProduto, [FromBody] Produto produtoDTO)
+        [HttpPost]
+        [Route("")]
+        public IHttpActionResult Criar([FromBody] Produto produto)
         {
-            Produto prodRet = null;
-
-            DBTesteCamposDealerDataContext db = new DBTesteCamposDealerDataContext();
-            db.DeferredLoadingEnabled = false;
-
             try
             {
-                prodRet = (from c in db.Produto
-                          where c.idProduto == idProduto
-                          select c).FirstOrDefault();
-
-                prodRet.dscProduto = produtoDTO.dscProduto;
-                
-                db.SubmitChanges();
+                var created = _service.Criar(produto);
+                return CreatedAtRoute("GetProdutoById", new { id = created.idProduto }, created);
             }
-            catch (Exception ex)
+            catch (ValidationException ex)
             {
-                throw ex;
+                return BadRequest(ex.Message);
             }
-
-            return true;
         }
 
-        /// <summary>
-        /// Deleta um Produto pelo seu id
-        /// </summary>
-        /// <param name="idProduto"></param>
-        [System.Web.Http.ActionName("DeleteById")]
-        public bool Delete(int idProduto)
+        [HttpPut]
+        [Route("{id:int}")]
+        public IHttpActionResult Atualizar(int id, [FromBody] Produto produto)
         {
-            Produto prodRet = null;
-
-            DBTesteCamposDealerDataContext db = new DBTesteCamposDealerDataContext();
-            db.DeferredLoadingEnabled = false;
-
             try
             {
-                prodRet = (from c in db.Produto
-                          where c.idProduto == idProduto
-                          select c).FirstOrDefault();
-
-                db.Produto.DeleteOnSubmit(prodRet);
-                db.SubmitChanges();
+                var updated = _service.Atualizar(id, produto);
+                return Ok(updated);
             }
-            catch (Exception ex)
+            catch (NotFoundException ex)
             {
-                throw ex;
+                return Content(HttpStatusCode.NotFound, ex.Message);
             }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
-            return true;
+        [HttpPatch]
+        [Route("{id:int}/preco")]
+        public IHttpActionResult AtualizarPreco(int id, [FromBody] decimal novoPreco)
+        {
+            try
+            {
+                var updated = _service.AtualizarPreco(id, novoPreco);
+                return Ok(updated);
+            }
+            catch (NotFoundException ex)
+            {
+                return Content(HttpStatusCode.NotFound, ex.Message);
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete]
+        [Route("{id:int}")]
+        public IHttpActionResult Deletar(int id)
+        {
+            try
+            {
+                _service.Deletar(id);
+                return StatusCode(HttpStatusCode.NoContent);
+            }
+            catch (NotFoundException ex)
+            {
+                return Content(HttpStatusCode.NotFound, ex.Message);
+            }
         }
     }
 }

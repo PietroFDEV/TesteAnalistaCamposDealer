@@ -14,7 +14,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TesteCamposDealer</RootNamespace>
     <AssemblyName>TesteCamposDealer</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
@@ -25,6 +25,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -46,16 +47,19 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Swashbuckle.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cd1bb07a5ac7c7bc, processorArchitecture=MSIL">
+      <HintPath>packages\Swashbuckle.Core.5.6.0\lib\net40\Swashbuckle.Core.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Routing" />
@@ -109,6 +113,7 @@
       <Private>True</Private>
       <HintPath>packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
@@ -126,7 +131,10 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\DependencyConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\SwaggerConfig.cs" />
+    <Compile Include="App_Start\SwaggerApiKeyHeaderOperationFilter.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\HelpPage\ApiDescriptionExtensions.cs" />
     <Compile Include="Areas\HelpPage\App_Start\HelpPageConfig.cs" />
@@ -157,18 +165,69 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\ClienteController.cs" />
+    <Compile Include="Controllers\ClienteMvcController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProdutoController.cs" />
+    <Compile Include="Controllers\ProdutoMvcController.cs" />
     <Compile Include="Controllers\VendaController.cs" />
+    <Compile Include="Controllers\VendaMvcController.cs" />
     <Compile Include="DB\DBTesteCamposDealer.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DBTesteCamposDealer.dbml</DependentUpon>
     </Compile>
+    <Compile Include="DB\DBTesteCamposDealer.extra.cs" />
+    <Content Include="docker\backup\TesteCamposDealer.bak" />
+    <None Include="docker\docker-compose.yml" />
+    <Compile Include="DTOs\ProdutoDto.cs" />
+    <Compile Include="DTOs\VendaDto.cs" />
+    <Compile Include="DTOs\VendaDetalheDto.cs" />
+    <Compile Include="Exceptions\ApiExceptions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\ClienteRepository.cs" />
+    <Compile Include="Repositories\Interfaces\IClienteRepository.cs" />
+    <Compile Include="Repositories\Interfaces\IVendaRepository.cs" />
+    <Compile Include="Repositories\Interfaces\IProdutoRepository.cs" />
+    <Compile Include="Repositories\VendaRepository .cs" />
+    <Compile Include="Repositories\ProdutoRepository.cs" />
+    <Compile Include="Services\Interfaces\IClienteService.cs" />
+    <Compile Include="Services\ClienteService.cs" />
+    <Compile Include="Services\Interfaces\IProdutoService.cs" />
+    <Compile Include="Services\Interfaces\IVendasService.cs" />
+    <Compile Include="Services\ProdutoService.cs" />
+    <Compile Include="Services\VendasService.cs" />
+    <Compile Include="Security\ApiKeyAuthorizeAttribute.cs" />
+    <Content Include="Views\Venda\Index.cshtml" />
+    <Content Include="Views\Venda\Create.cshtml" />
+    <Content Include="Views\Venda\Details.cshtml" />
+    <Content Include="Views\Venda\Delete.cshtml" />
+    <Content Include="Views\Cliente\Index.cshtml" />
+    <Content Include="Views\Cliente\Create.cshtml" />
+    <Content Include="Views\Cliente\Edit.cshtml" />
+    <Content Include="Views\Cliente\Details.cshtml" />
+    <Content Include="Views\Cliente\Delete.cshtml" />
+    <Content Include="Views\ClienteMvc\Index.cshtml" />
+    <Content Include="Views\ClienteMvc\Create.cshtml" />
+    <Content Include="Views\ClienteMvc\Edit.cshtml" />
+    <Content Include="Views\ClienteMvc\Details.cshtml" />
+    <Content Include="Views\ClienteMvc\Delete.cshtml" />
+    <Content Include="Views\ProdutoMvc\Index.cshtml" />
+    <Content Include="Views\ProdutoMvc\Create.cshtml" />
+    <Content Include="Views\ProdutoMvc\Edit.cshtml" />
+    <Content Include="Views\ProdutoMvc\Details.cshtml" />
+    <Content Include="Views\ProdutoMvc\Delete.cshtml" />
+    <Content Include="Views\VendaMvc\Index.cshtml" />
+    <Content Include="Views\VendaMvc\Create.cshtml" />
+    <Content Include="Views\VendaMvc\Details.cshtml" />
+    <Content Include="Views\VendaMvc\Delete.cshtml" />
+    <Content Include="Views\Produto\Index.cshtml" />
+    <Content Include="Views\Produto\Create.cshtml" />
+    <Content Include="Views\Produto\Edit.cshtml" />
+    <Content Include="Views\Produto\Details.cshtml" />
+    <Content Include="Views\Produto\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
@@ -176,6 +235,8 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="docker\restore.sql" />
+    <Content Include="docker\pos_restore.sql" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -208,6 +269,10 @@
     <None Include="DB\DBTesteCamposDealer.dbml.layout">
       <DependentUpon>DBTesteCamposDealer.dbml</DependentUpon>
     </None>
+    <Content Include="README.md" />
+    <Content Include="docs\CamposDealer.postman_collection.json" />
+    <Content Include="docs\ProjetoExplicacao.pdf" />
+    <Content Include="docs\ProjetoExplicacao.txt" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -232,9 +297,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
-    <Folder Include="Views\Cliente\" />
-    <Folder Include="Views\Produto\" />
-    <Folder Include="Views\Venda\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
