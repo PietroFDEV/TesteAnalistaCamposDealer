@@ -1,0 +1,27 @@
+﻿@model List<global::VendaDetalheDto>
+
+<h2>Vendas</h2>
+
+<a href="/VendaMvc/Create">Nova Venda</a>
+
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Cliente</th>
+        <th>Total</th>
+        <th>Ações</th>
+    </tr>
+
+    @foreach (var v in Model)
+    {
+        <tr>
+            <td>@v.IdVenda</td>
+            <td>@v.IdCliente</td>
+            <td>@v.ValorTotal</td>
+            <td>
+                <a href="/VendaMvc/Details/@v.IdVenda">Detalhes</a> |
+                <a href="/VendaMvc/Delete/@v.IdVenda">Excluir</a>
+            </td>
+        </tr>
+    }
+</table>

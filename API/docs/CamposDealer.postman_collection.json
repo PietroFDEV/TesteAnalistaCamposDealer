@@ -1,0 +1,214 @@
+﻿{
+  "info": {
+    "name": "Campos Dealer API",
+    "_postman_id": "1b1c6f3b-8f1b-4c2d-9f1f-2a7c3d0a0c01",
+    "description": "Coleção completa para testar todos os endpoints da API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Clientes - Listar",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "X-API-KEY", "value": "{{apiKey}}" }
+        ],
+        "url": "{{baseUrl}}/api/cliente"
+      }
+    },
+    {
+      "name": "Clientes - Buscar por ID",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "X-API-KEY", "value": "{{apiKey}}" }
+        ],
+        "url": "{{baseUrl}}/api/cliente/1"
+      }
+    },
+    {
+      "name": "Clientes - Criar",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "X-API-KEY", "value": "{{apiKey}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": "{{baseUrl}}/api/cliente",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nomeCliente\": \"Joao\",\n  \"endereco\": \"Rua A\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Clientes - Atualizar",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "X-API-KEY", "value": "{{apiKey}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": "{{baseUrl}}/api/cliente/1",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nomeCliente\": \"Joao Atualizado\",\n  \"endereco\": \"Rua B\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Clientes - Excluir",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          { "key": "X-API-KEY", "value": "{{apiKey}}" }
+        ],
+        "url": "{{baseUrl}}/api/cliente/1"
+      }
+    },
+    {
+      "name": "Produtos - Listar",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "X-API-KEY", "value": "{{apiKey}}" }
+        ],
+        "url": "{{baseUrl}}/api/produto"
+      }
+    },
+    {
+      "name": "Produtos - Buscar por ID",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "X-API-KEY", "value": "{{apiKey}}" }
+        ],
+        "url": "{{baseUrl}}/api/produto/1"
+      }
+    },
+    {
+      "name": "Produtos - Criar",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "X-API-KEY", "value": "{{apiKey}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": "{{baseUrl}}/api/produto",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"dscProduto\": \"Produto A\",\n  \"vlrProduto\": 10.5\n}"
+        }
+      }
+    },
+    {
+      "name": "Produtos - Atualizar",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "X-API-KEY", "value": "{{apiKey}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": "{{baseUrl}}/api/produto/1",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"dscProduto\": \"Produto A2\",\n  \"vlrProduto\": 11.0\n}"
+        }
+      }
+    },
+    {
+      "name": "Produtos - Atualizar Preco",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          { "key": "X-API-KEY", "value": "{{apiKey}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": "{{baseUrl}}/api/produto/1/preco",
+        "body": {
+          "mode": "raw",
+          "raw": "12.75"
+        }
+      }
+    },
+    {
+      "name": "Produtos - Excluir",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          { "key": "X-API-KEY", "value": "{{apiKey}}" }
+        ],
+        "url": "{{baseUrl}}/api/produto/1"
+      }
+    },
+    {
+      "name": "Vendas - Listar Todas",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "X-API-KEY", "value": "{{apiKey}}" }
+        ],
+        "url": "{{baseUrl}}/api/venda"
+      }
+    },
+    {
+      "name": "Vendas - Buscar por ID",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "X-API-KEY", "value": "{{apiKey}}" }
+        ],
+        "url": "{{baseUrl}}/api/venda/1"
+      }
+    },
+    {
+      "name": "Vendas - Buscar por Cliente",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "X-API-KEY", "value": "{{apiKey}}" }
+        ],
+        "url": "{{baseUrl}}/api/venda/cliente/1"
+      }
+    },
+    {
+      "name": "Vendas - Ranking",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "X-API-KEY", "value": "{{apiKey}}" }
+        ],
+        "url": "{{baseUrl}}/api/venda/top/5"
+      }
+    },
+    {
+      "name": "Vendas - Criar",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "X-API-KEY", "value": "{{apiKey}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": "{{baseUrl}}/api/venda",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"idCliente\": 1,\n  \"itens\": [\n    { \"idProduto\": 1, \"quantidade\": 2 }\n  ]\n}"
+        }
+      }
+    },
+    {
+      "name": "Vendas - Excluir",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          { "key": "X-API-KEY", "value": "{{apiKey}}" }
+        ],
+        "url": "{{baseUrl}}/api/venda/1"
+      }
+    }
+  ],
+  "variable": [
+    { "key": "baseUrl", "value": "https://localhost:44302" },
+    { "key": "apiKey", "value": "changeme" }
+  ]
+}

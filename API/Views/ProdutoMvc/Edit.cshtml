@@ -1,0 +1,41 @@
+﻿@{
+    Layout = null;
+    ViewBag.Title = "Editar Produto";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        body { font-family: "Segoe UI", Arial, sans-serif; background: #f6f8ff; color: #1f2d5a; }
+        .wrap { max-width: 680px; margin: 32px auto; padding: 0 16px; }
+        .card { background: #fff; border-radius: 14px; padding: 20px; box-shadow: 0 8px 20px rgba(24,36,79,0.08); }
+        label { display: block; margin-top: 12px; font-weight: 600; }
+        input { width: 100%; padding: 10px; border-radius: 10px; border: 1px solid #e3e7ff; }
+        .btn { margin-top: 16px; background: #2f5fff; color: #fff; padding: 10px 16px; border-radius: 10px; border: none; font-weight: 600; }
+        .link { color: #2f5fff; text-decoration: none; font-weight: 600; }
+        .error { color: #c0392b; }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <h1>Editar Produto</h1>
+    <div class="card">
+        @if (ViewBag.Erro != null)
+        {
+            <p class="error">@ViewBag.Erro</p>
+        }
+        <form method="post">
+            <label>Descrição</label>
+            <input type="text" name="dscProduto" value="@Model.dscProduto" required />
+            <label>Preço</label>
+            <input type="number" step="0.01" name="vlrProduto" value="@Model.vlrProduto" required />
+            <button class="btn" type="submit">Salvar</button>
+        </form>
+    </div>
+    <p><a class="link" href="/produto">Voltar</a></p>
+</div>
+</body>
+</html>

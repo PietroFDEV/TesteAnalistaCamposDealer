@@ -1,0 +1,51 @@
+﻿@{
+    Layout = null;
+    ViewBag.Title = "Detalhes da Venda";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        body { font-family: "Segoe UI", Arial, sans-serif; background: #f6f8ff; color: #1f2d5a; }
+        .wrap { max-width: 820px; margin: 32px auto; padding: 0 16px; }
+        .card { background: #fff; border-radius: 14px; padding: 20px; box-shadow: 0 8px 20px rgba(24,36,79,0.08); }
+        table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+        th, td { padding: 10px; border-bottom: 1px solid #eef1ff; text-align: left; }
+        .link { color: #2f5fff; text-decoration: none; font-weight: 600; }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <h1>Detalhes da Venda</h1>
+    <div class="card">
+        <p><strong>ID:</strong> @Model.IdVenda</p>
+        <p><strong>Cliente:</strong> @Model.IdCliente</p>
+        <p><strong>Data:</strong> @Model.DataVenda</p>
+        <p><strong>Total:</strong> @Model.ValorTotal</p>
+
+        <h3>Itens</h3>
+        <table>
+            <tr>
+                <th>Produto</th>
+                <th>Quantidade</th>
+                <th>Valor Unitário</th>
+                <th>Total</th>
+            </tr>
+            @foreach (var item in Model.Itens)
+            {
+                <tr>
+                    <td>@item.IdProduto</td>
+                    <td>@item.Quantidade</td>
+                    <td>@item.ValorUnitario</td>
+                    <td>@item.ValorTotal</td>
+                </tr>
+            }
+        </table>
+    </div>
+    <p><a class="link" href="/venda">Voltar</a></p>
+</div>
+</body>
+</html>

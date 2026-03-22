@@ -1,0 +1,29 @@
+﻿@model global::VendaDetalheDto
+
+<h2>Detalhes da Venda</h2>
+
+<p><strong>ID:</strong> @Model.IdVenda</p>
+<p><strong>Cliente:</strong> @Model.IdCliente</p>
+<p><strong>Data:</strong> @Model.DataVenda</p>
+<p><strong>Total:</strong> @Model.ValorTotal</p>
+
+<h3>Itens</h3>
+<table border="1">
+    <tr>
+        <th>Produto</th>
+        <th>Quantidade</th>
+        <th>Valor Unitário</th>
+        <th>Total</th>
+    </tr>
+    @foreach (var item in Model.Itens)
+    {
+        <tr>
+            <td>@item.IdProduto</td>
+            <td>@item.Quantidade</td>
+            <td>@item.ValorUnitario</td>
+            <td>@item.ValorTotal</td>
+        </tr>
+    }
+</table>
+
+<a href="/VendaMvc">Voltar</a>

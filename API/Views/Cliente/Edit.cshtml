@@ -1,0 +1,23 @@
+﻿@model TesteCamposDealer.DB.Cliente
+
+<h2>Editar Cliente</h2>
+
+@if (ViewBag.Erro != null)
+{
+    <p style="color:red">@ViewBag.Erro</p>
+}
+
+<form method="post">
+    <label>Nome</label>
+    <input type="text" name="nomeCliente" value="@Model.nomeCliente" required />
+
+    <br />
+
+    <label>Endereço</label>
+    <input type="text" name="endereco" value="@Model.endereco" required />
+
+    <br /><br />
+    <button type="submit">Salvar</button>
+</form>
+
+<a href="/ClienteMvc">Voltar</a>

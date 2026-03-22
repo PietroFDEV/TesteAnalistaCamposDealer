@@ -1,0 +1,14 @@
+﻿@model global::VendaDetalheDto
+
+<h2>Excluir Venda</h2>
+
+<p>Tem certeza que deseja excluir a venda abaixo?</p>
+<p><strong>ID:</strong> @Model.IdVenda</p>
+<p><strong>Cliente:</strong> @Model.IdCliente</p>
+<p><strong>Total:</strong> @Model.ValorTotal</p>
+
+<form method="post">
+    <button type="submit">Confirmar Exclusão</button>
+</form>
+
+<a href="/VendaMvc">Cancelar</a>

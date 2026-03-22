@@ -1,147 +1,98 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Net;
 using System.Web.Http;
-using System.Web.Mvc;
-using TesteCamposDealer.DB;
 
 namespace TesteCamposDealer.Controllers
 {
+    [ApiKeyAuthorize]
+    [RoutePrefix("api/venda")]
     public class VendaController : ApiController
     {
-        /// <summary>
-        /// Recupera a Venda por Id..
-        /// </summary>
-        /// <param name="idVenda"></param>
-        /// <returns></returns>
-        [System.Web.Http.ActionName("GetById")]
-        public Venda GetById(int idVenda)
+        private readonly IVendaService _service;
+
+        public VendaController(IVendaService service)
         {
-            Venda vendaRet = null;
-
-            DBTesteCamposDealerDataContext db = new DBTesteCamposDealerDataContext();
-            db.DeferredLoadingEnabled = false;
-
-            try
-            {
-                vendaRet = (from c in db.Venda
-                          where c.idVenda == idVenda
-                          select c).FirstOrDefault();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-            return vendaRet;
+            _service = service;
         }
 
-        /// <summary>
-        /// Recupera todas as vendas
-        /// </summary>
-        /// <returns></returns>
-        public List<Venda> GetAll()
+        [HttpGet]
+        [Route("")]
+        public IHttpActionResult GetAll()
         {
-            List<Venda> lstVendaret = null;
-
-            DBTesteCamposDealerDataContext db = new DBTesteCamposDealerDataContext();
-            db.DeferredLoadingEnabled = false;
-
-            try
-            {
-                lstVendaret = (from c in db.Venda
-                             select c).ToList();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-            return lstVendaret;
+            return Ok(_service.GetAll());
         }
 
-
-        /// <summary>
-        /// Cadastra uma venda
-        /// </summary>
-        /// <param name="cliente"></param>
-        public bool Post([FromBody] Venda vendaDTO)
+        [HttpPost]
+        [Route("")]
+        public IHttpActionResult CriarVenda([FromBody] VendaDto dto)
         {
-
-            DBTesteCamposDealerDataContext db = new DBTesteCamposDealerDataContext();
-            db.DeferredLoadingEnabled = false;
-
             try
             {
-                db.Venda.InsertOnSubmit(vendaDTO);
-                db.SubmitChanges();
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
+                var venda = _service.CriarVenda(dto);
 
-            return true;
+                return CreatedAtRoute(
+                    "GetVendaById",
+                    new { id = venda.IdVenda },
+                    venda
+                );
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (NotFoundException ex)
+            {
+                return Content(HttpStatusCode.NotFound, ex.Message);
+            }
         }
 
-        /// <summary>
-        /// Altera uma venda pelo Id
-        /// </summary>
-        /// <param name="idVenda"></param>
-        /// <param name="vendaDTO"></param>
-        [System.Web.Http.ActionName("PutById")]
-        public bool Put(int idVenda, [FromBody] Venda vendaDTO)
+        [HttpGet]
+        [Route("{id:int}", Name = "GetVendaById")]
+        public IHttpActionResult GetById(int id)
         {
-            Venda vendaRet = null;
-
-            DBTesteCamposDealerDataContext db = new DBTesteCamposDealerDataContext();
-            db.DeferredLoadingEnabled = false;
-
             try
             {
-                vendaRet = (from c in db.Venda
-                          where c.idVenda == idVenda
-                          select c).FirstOrDefault();
-
-                vendaRet.vlrProduto = vendaDTO.vlrProduto;
-                db.SubmitChanges();
+                return Ok(_service.GetById(id));
             }
-            catch (Exception ex)
+            catch (NotFoundException ex)
             {
-                throw ex;
+                return Content(HttpStatusCode.NotFound, ex.Message);
             }
-
-            return true;
         }
 
-        /// <summary>
-        /// Deleta uma venda pelo seu id
-        /// </summary>
-        /// <param name="idCliente"></param>
-        [System.Web.Http.ActionName("DeleteById")]
-        public bool Delete(int idVenda)
+        [HttpGet]
+        [Route("cliente/{idCliente:int}")]
+        public IHttpActionResult GetByCliente(int idCliente)
         {
-            Venda vendaRet = null;
+            return Ok(_service.GetByCliente(idCliente));
+        }
 
-            DBTesteCamposDealerDataContext db = new DBTesteCamposDealerDataContext();
-            db.DeferredLoadingEnabled = false;
-
+        [HttpGet]
+        [Route("top/{top:int}")]
+        public IHttpActionResult GetTop(int top)
+        {
             try
             {
-                vendaRet = (from c in db.Venda
-                          where c.idVenda == idVenda
-                          select c).FirstOrDefault();
-
-                db.Venda.DeleteOnSubmit(vendaRet);
-                db.SubmitChanges();
+                return Ok(_service.GetTop(top));
             }
-            catch (Exception ex)
+            catch (ValidationException ex)
             {
-                throw ex;
+                return BadRequest(ex.Message);
             }
+        }
 
-            return true;
+        [HttpDelete]
+        [Route("{id:int}")]
+        public IHttpActionResult Delete(int id)
+        {
+            try
+            {
+                _service.Deletar(id);
+                return StatusCode(HttpStatusCode.NoContent);
+            }
+            catch (NotFoundException ex)
+            {
+                return Content(HttpStatusCode.NotFound, ex.Message);
+            }
         }
     }
 }

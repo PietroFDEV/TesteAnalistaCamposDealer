@@ -1,0 +1,34 @@
+﻿@{
+    Layout = null;
+    ViewBag.Title = "Excluir Produto";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        body { font-family: "Segoe UI", Arial, sans-serif; background: #f6f8ff; color: #1f2d5a; }
+        .wrap { max-width: 680px; margin: 32px auto; padding: 0 16px; }
+        .card { background: #fff; border-radius: 14px; padding: 20px; box-shadow: 0 8px 20px rgba(24,36,79,0.08); }
+        .btn { margin-top: 12px; background: #d0342c; color: #fff; padding: 10px 16px; border-radius: 10px; border: none; font-weight: 600; }
+        .link { color: #2f5fff; text-decoration: none; font-weight: 600; }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <h1>Excluir Produto</h1>
+    <div class="card">
+        <p>Tem certeza que deseja excluir o produto abaixo?</p>
+        <p><strong>ID:</strong> @Model.idProduto</p>
+        <p><strong>Descrição:</strong> @Model.dscProduto</p>
+        <p><strong>Preço:</strong> @Model.vlrProduto</p>
+        <form method="post">
+            <button class="btn" type="submit">Confirmar Exclusão</button>
+        </form>
+    </div>
+    <p><a class="link" href="/produto">Cancelar</a></p>
+</div>
+</body>
+</html>
